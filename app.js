@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var nconf = require('nconf');
 var winston = require('winston');
 var nunjucks = require('nunjucks');
+var popular = require('./routes/popular');
 var ig = require('instagram-node').instagram();
 ig.use({"client_id":"f085d81a778942f9b538976570e9d5fa",
 "client_secret": "f431a981922f4cc0925d1c6d98f71de8"});
@@ -52,9 +53,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/popular', popular);
 
 app.use('/', index);
 app.use('/users', users);
+
+app.get(path, callback);
+
+app.get('/', function(req,res){
+  res.sendFile('Hello World')
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
