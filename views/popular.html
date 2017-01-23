@@ -1,7 +1,16 @@
-{% extends "layout.html" %}
+<html>
+<head>Star Wars Quotes
+<title>Star Wars Quotes</title>
+</head>
 
-{% block content %}
-{% for url in urls %}
-  <img src="{{url}}" width="250" />
-{% endfor %}
-{% endblock %}
+<body>
+<form action="/quotes" method="POST">
+  <input type="text" placeholder="name"
+         name="name">
+  <input type="text" placeholder="quote"
+         name="quote">
+  <button type="submit">Sumbit</button>
+</form>
+
+</body>
+</html>

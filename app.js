@@ -12,7 +12,18 @@ var ig = require('instagram-node').instagram();
 ig.use({"client_id":"f085d81a778942f9b538976570e9d5fa",
 "client_secret": "f431a981922f4cc0925d1c6d98f71de8"});
 
+const MongoClient = require('mongodb').MongoClient;
 
+var db;
+
+
+MongoClient.connect('mongodb://<nawak>:<ohno3104>@ds013545.mlab.com:13545/star-wars-quotes', function(err, database){
+    if (err) return console.log(err)
+    db = database
+    app.listen(3000, function(){
+    winston.log('listening on 3000')
+    })
+});
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -61,7 +72,7 @@ app.use('/users', users);
 app.get(path, callback);
 
 app.get('/', function(req,res){
-  res.sendFile('Hello World')
+    res.sendFile(index.html)
 })
 
 // catch 404 and forward to error handler
@@ -80,6 +91,18 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.post('/quotes', function(req,res) {
+  winston.info(req.body)
+    db.collection('quotes').save(req.body, function(err,result){
+        if (err) return winston.error(err);
+
+        winston.info('saved to database');
+    res.redirect('/');
+    })
 });
 
 module.exports = app;
